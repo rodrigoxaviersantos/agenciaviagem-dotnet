@@ -20,6 +20,8 @@ Desenvolver as APIs para manipulação de dados em C#
 
 Criar uma interface  usando React.Js ou Next.Js  para consultas usando API em C#.
 
+Link do Miro: https://miro.com/app/board/uXjVN7zSRvo=/
+
 ![image](https://github.com/rodrigoxaviersantos/agenciaviagem-dotnet/assets/116025593/7a58df42-2e92-489d-b7f8-aa07753b3489)
 
 ![image](https://github.com/rodrigoxaviersantos/agenciaviagem-dotnet/assets/116025593/eedef107-ce41-4400-8238-b5be19ba439a)
