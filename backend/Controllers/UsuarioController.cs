@@ -20,7 +20,7 @@ namespace backend.Controllers
 
         // CRUD 
 
-        // Create 
+        // POST api/Usuario
         [HttpPost]
         public async Task<IActionResult> CreateUsuario([FromBody] CreateUpdateUsuarioDto dto)
         {
@@ -38,70 +38,59 @@ namespace backend.Controllers
             return Ok("Usuário salvo com sucesso!");
         }
 
-        // Read 
-        [HttpGet]
-        public async Task<ActionResult<List<UsuarioEntity>>> GetAllUsuario()
+        // GET api/Usuario/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UsuarioEntity>> GetUsuarioById(int id)
         {
-            var usuario = await _context.Usuario.ToListAsync();
-            return Ok(usuario);
-        }
-        [HttpGet]
-        [Route("{id}")]
-
-        public async Task<ActionResult<UsuarioEntity>> GetUsuarioByID([FromRoute] long id)
-        {
-            var usuario = await _context.Usuario.FirstOrDefaultAsync(x => x.Id == id);
-            if (usuario == null)
-            {
-                return NotFound("Usuário não Encontrado!");
-
-            }
-
-            return Ok(usuario);
-        }
-
-
-        // Update 
-        [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> UpdateUsuario([FromRoute] long id, [FromBody] CreateUpdateUsuarioDto dto)
-        {
-            var usuario = await _context.Usuario.FirstOrDefaultAsync (q => q.Id == id);
+            var usuario = await _context.Usuario.FindAsync(id);
 
             if (usuario == null)
-            {
-                return NotFound("Usuário não Encontrado");
-            }
-
-            usuario.Name = dto.Name;
-            usuario.Cpf = dto.Cpf;
-            usuario.Email = dto.Email;
-            usuario.Senha = dto.Senha;
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Usuário atualizado com Sucesso");
-            
-        }
-
-        // Delete 
-        [HttpDelete]
-        [Route("{id}")]
-
-        public async Task<IActionResult> DeleUsuario([FromRoute] long id)
-        {
-            var usuario = await _context.Usuario.FirstOrDefaultAsync(q => q.Id == id);
-            if(usuario == null)
             {
                 return NotFound("Usuário não encontrado!");
             }
 
-            _context.Usuario.Remove(usuario);
-            await _context.SaveChangesAsync();
-
-            return Ok("Usuário excluído com Sucesso!"); 
+            return Ok(usuario);
         }
 
+        
+            // PUT api/Usuario/{id}
+            [HttpPut("{id}")]
+            public async Task<IActionResult> UpdateUsuario(int id, [FromBody] UsuarioEntity updatedUsuario)
+            {
+                var usuario = await _context.Usuario.FindAsync(id);
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado!");
+                }
+
+                // Update properties
+                usuario.Name = updatedUsuario.Name;
+                usuario.Cpf = updatedUsuario.Cpf;
+                usuario.Email = updatedUsuario.Email;
+                usuario.Senha = updatedUsuario.Senha;
+
+                await _context.SaveChangesAsync();
+
+                return Ok("Usuário atualizado com sucesso!");
+            }
+
+            // DELETE api/Usuario/{id}
+            [HttpDelete("{id}")]
+            public async Task<IActionResult> DeleteUsuario(int id)
+            {
+                var usuario = await _context.Usuario.FindAsync(id);
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado!");
+                }
+
+                _context.Usuario.Remove(usuario);
+                await _context.SaveChangesAsync();
+
+                return Ok("Usuário excluído com sucesso!");
+            }
+        }
 
     }
-}

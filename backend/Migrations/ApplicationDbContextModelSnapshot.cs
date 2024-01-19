@@ -44,7 +44,7 @@ namespace backend.Migrations
                     b.ToTable("Destino");
                 });
 
-            modelBuilder.Entity("backend.Entities.DestinoReservado", b =>
+            modelBuilder.Entity("backend.Entities.DestinoReservadoEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("DateCheckout")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DestinoId")
+                    b.Property<int>("DestinoId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumeroAdultos")
@@ -67,8 +67,8 @@ namespace backend.Migrations
                     b.Property<int>("NumeroCriancas")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UsuarioId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -81,11 +81,11 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.UsuarioEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cpf")
                         .HasColumnType("nvarchar(max)");
@@ -104,19 +104,33 @@ namespace backend.Migrations
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("backend.Entities.DestinoReservado", b =>
+            modelBuilder.Entity("backend.Entities.DestinoReservadoEntity", b =>
                 {
                     b.HasOne("backend.Entities.DestinoEntity", "Destino")
-                        .WithMany()
-                        .HasForeignKey("DestinoId");
+                        .WithMany("DestinoReservados")
+                        .HasForeignKey("DestinoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("backend.Entities.UsuarioEntity", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .WithMany("DestinoReservados")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Destino");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("backend.Entities.DestinoEntity", b =>
+                {
+                    b.Navigation("DestinoReservados");
+                });
+
+            modelBuilder.Entity("backend.Entities.UsuarioEntity", b =>
+                {
+                    b.Navigation("DestinoReservados");
                 });
 #pragma warning restore 612, 618
         }

@@ -46,7 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Adicione os serviços ao contêiner.
 
-// Configurar o banco de dados
+// Configuração banco de dados
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
